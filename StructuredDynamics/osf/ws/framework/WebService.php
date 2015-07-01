@@ -13,6 +13,22 @@ use \StructuredDynamics\osf\framework\Resultset;
 use \StructuredDynamics\osf\ws\framework\SparqlQueryHttp; 
 use \StructuredDynamics\osf\ws\framework\SparqlQueryOdbc; 
 
+/**
+ * Adds getallheaders mod_php function
+ * http://www.php.net/manual/en/function.getallheaders.php
+ */
+if (!function_exists('getallheaders')) {
+  function getallheaders() {
+    $headers = '';
+    foreach ($_SERVER as $name => $value) {
+      if (substr($name, 0, 5) == 'HTTP_') {
+        $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+      }
+    }
+  }
+  return $headers;
+}
+
 /** A Web Service abstract class. This abstract class is used to define a web service that can interact 
     with external webservices, or web services in a pipeline (compound), in a RESTful way.
 
